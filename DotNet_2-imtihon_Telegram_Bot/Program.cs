@@ -6,7 +6,7 @@ class Project
     {
         string link = "6970760432:AAHeRpC3tnHzISQmZ1l_9nRYI0MefjidEhM";
 
-        BotHandler botHandler =new BotHandler(link);
+        BotHandler botHandler = new BotHandler(link);
 
         await botHandler.BotHandle();
 
