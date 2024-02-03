@@ -1,5 +1,4 @@
-﻿using DotNet_2_imtihon_Telegram_Bot.Admin;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
@@ -53,31 +52,23 @@ namespace DotNet_2_imtihon_Telegram_Bot
                 return;
             // Only process text messages
 
-            #region crud
+
             var chatId = message.Chat.Id;
+
+            Crud.Create(new BotUser()
+            {
+                chatID = chatId,
+                status = 0,
+                phoneNumber = ""
+            });
             Console.WriteLine($"Received a '{update.Message.Text}' message in chat ,{update.Message.Chat.LastName} {update.Message.Chat.FirstName} {update.Message.Chat.Id} ");
 
+            if (message.Text == "/start" && update.Message.Chat.Id == 5921666029)
+            {
+                system_admin system_Admin = new system_admin();
+                system_Admin.AdminWork(botClient, update, cancellationToken);
 
-            //if (message.Text == "/start" && update.Message.Chat.Id == 1633746526)
-            //{
-            //    system_admin system_Admin = new system_admin();
-            //    system_Admin.AdminWork(botClient, update, cancellationToken);
-
-            //}
-
-            //if(message.Text == "Reklamani jonatish")
-            //{
-            //    system_admin system_Admin = new system_admin();
-            //    system_Admin.Reklama(botClient, update, cancellationToken);
-            //}
-
-            //Crud.Create(new BotUser()
-            //{
-            //    chatID = chatId,
-            //    status = 0,
-            //    phoneNumber = ""
-            //});
-
+            }
 
             if (message.Text == "/start")
             {
@@ -101,17 +92,14 @@ namespace DotNet_2_imtihon_Telegram_Bot
                     return;
 
                 }
-                
-                
-                
-                
+                else
+                {
+                    await botClient.SendTextMessageAsync(
+                           chatId: chatId,
+                           text: "Assalomu elykum! Botimizga hush kelibsiz\nBu bot orqali Video,Musica saqlab olishingiz mumkin✅\n",
+                           cancellationToken: cancellationToken);
+                }
             }
-            #endregion
-
-
-
-
-            #region Phone number
             if (message.Contact != null)
             {
                 Crud.Update(chatId, message.Contact.PhoneNumber);
@@ -120,10 +108,7 @@ namespace DotNet_2_imtihon_Telegram_Bot
             {
 
                 ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
-                {   
-
-
-
+                {
                 KeyboardButton.WithRequestContact("Phone number☎️")
             })
                 {
@@ -137,43 +122,6 @@ namespace DotNet_2_imtihon_Telegram_Bot
 
 
             }
-            else if (Crud.IsPhoneNumberNull(chatId) == true)
-            {
-                await botClient.SendTextMessageAsync(
-                       chatId: chatId,
-                       text: $"Contagingiz qabul qilindi✅    {message.Chat.LastName} {message.Chat.FirstName}",
-                       cancellationToken: cancellationToken);
-                return;
-            }
-            #endregion
-
-
-            if (message.Text == null)
-            {
-                return;
-            }
-            else if (message.Text.StartsWith("https://www.instagram.com"))
-            {
-                string replaceMessage = message.Text!.Replace("www.", "dd");
-
-                try
-                {
-                    Console.WriteLine("Qale");
-                    await botClient.SendVideoAsync(
-                       chatId: message.Chat.Id,
-                       video: $"{replaceMessage}",
-                       supportsStreaming: true,
-                       cancellationToken: cancellationToken);
-                }
-                catch (Exception) { }
-
-                try
-                {
-                    await botClient.SendPhotoAsync(chatId: message.Chat.Id, photo: $"{replaceMessage}", cancellationToken: cancellationToken);
-                }
-                catch (Exception) { }
-            }
-
         }
 
         async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
