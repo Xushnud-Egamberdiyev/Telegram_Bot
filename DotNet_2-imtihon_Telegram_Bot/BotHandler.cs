@@ -44,7 +44,7 @@ namespace DotNet_2_imtihon_Telegram_Bot
             // Send cancellation request to stop bot
             cts.Cancel();
 
-        }
+        //}
 
         async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
@@ -55,21 +55,29 @@ namespace DotNet_2_imtihon_Telegram_Bot
 
             #region crud
             var chatId = message.Chat.Id;
-
-            Crud.Create(new BotUser()
-            {
-                chatID = chatId,
-                status = 0,
-                phoneNumber = ""
-            });
             Console.WriteLine($"Received a '{update.Message.Text}' message in chat ,{update.Message.Chat.LastName} {update.Message.Chat.FirstName} {update.Message.Chat.Id} ");
 
-            if (message.Text == "/start" && update.Message.Chat.Id == 5921666029)
-            {
-                system_admin system_Admin = new system_admin();
-                system_Admin.AdminWork(botClient, update, cancellationToken);
 
-            }
+            //if (message.Text == "/start" && update.Message.Chat.Id == 1633746526)
+            //{
+            //    system_admin system_Admin = new system_admin();
+            //    system_Admin.AdminWork(botClient, update, cancellationToken);
+
+            //}
+
+            //if(message.Text == "Reklamani jonatish")
+            //{
+            //    system_admin system_Admin = new system_admin();
+            //    system_Admin.Reklama(botClient, update, cancellationToken);
+            //}
+
+            //Crud.Create(new BotUser()
+            //{
+            //    chatID = chatId,
+            //    status = 0,
+            //    phoneNumber = ""
+            //});
+
 
             if (message.Text == "/start")
             {

@@ -27,7 +27,7 @@ namespace DotNet_2_imtihon_Telegram_Bot.Admin
                     ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
                     {
                 KeyboardButton.WithRequestContact("Reklamani jonatish"),
-                KeyboardButton.WithRequestContact("Pdf korinishida yuklash")
+                KeyboardButton.WithRequestContact("User ma'lumotlarini pdf shaklida yuklash")
 
 
 
@@ -46,5 +46,15 @@ namespace DotNet_2_imtihon_Telegram_Bot.Admin
                 
             }
         }
+
+        public async Task Reklama(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        {
+            if(update.Message.Text == "Reklamani jonatish")
+            {
+                Console.WriteLine("Keldi");
+            }
+        }
     }
+
+    
 }
