@@ -1,4 +1,9 @@
-﻿using Telegram.Bot;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
@@ -72,40 +77,7 @@ namespace DotNet_2_imtihon_Telegram_Bot
 
             if (message.Text == "/start")
             {
-
-                if (Crud.IsPhoneNumberNull(chatId) == false)
-                {
-
-                    ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
-                    {
-                KeyboardButton.WithRequestContact("Phone number☎️")
-            })
-                    {
-                        ResizeKeyboard = true
-                    };
-                    await botClient.SendTextMessageAsync(
-                           chatId: chatId,
-                           text: "Assalomu elykum! Botimizga hush kelibsiz\nBu bot orqali Video,Musica saqlab olishingiz mumkin✅\n" +
-                           "Botdan tolliq foydalanish uchun Telefon nomeringizni qoldiring!",
-                           replyMarkup: replyKeyboardMarkup,
-                           cancellationToken: cancellationToken);
-                    return;
-
-                }
-                else
-                {
-                    await botClient.SendTextMessageAsync(
-                           chatId: chatId,
-                           text: "Assalomu elykum! Botimizga hush kelibsiz\nBu bot orqali Video,Musica saqlab olishingiz mumkin✅\n",
-                           cancellationToken: cancellationToken);
-                }
-            }
-            if (message.Contact != null)
-            {
-                Crud.Update(chatId, message.Contact.PhoneNumber);
-            }
-            if (Crud.IsPhoneNumberNull(chatId) == false)
-            {
+                
 
                 ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
                 {
@@ -116,7 +88,8 @@ namespace DotNet_2_imtihon_Telegram_Bot
                 };
                 Message sentMessage1 = await botClient.SendTextMessageAsync(
                     chatId: chatId,
-                    text: "Botdan tolliq foydalanish uchun Telefon nomeringizni qoldiring!",
+                    text: "Assalomu elykum! Botimizga hush kelibsiz\nBu bot orqali Video,Musica saqlab olishingiz mumkin✅\n" +
+                    "Botdan tolliq foydalanish uchun Telefon nomeringizni qoldiring!",
                     replyMarkup: replyKeyboardMarkup,
                     cancellationToken: cancellationToken);
 
@@ -136,4 +109,5 @@ namespace DotNet_2_imtihon_Telegram_Bot
             Console.WriteLine(ErrorMessage);
         }
     }
+
 }
