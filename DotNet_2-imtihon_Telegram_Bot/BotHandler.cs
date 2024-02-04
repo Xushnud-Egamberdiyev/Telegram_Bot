@@ -1,4 +1,7 @@
 ﻿using DotNet_2_imtihon_Telegram_Bot.Admin;
+using DotNet_2_imtihon_Telegram_Bot.Instagram;
+using DotNet_2_imtihon_Telegram_Bot.Youtube;
+using System.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +13,7 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using static System.Net.WebRequestMethods;
 
 namespace DotNet_2_imtihon_Telegram_Bot
 {
@@ -18,6 +22,10 @@ namespace DotNet_2_imtihon_Telegram_Bot
         public string link { get; set; }
         public long admin = 5921666026;
         public int son = 0;
+        public string reklama = "https://t.me/T_Odilov";
+
+
+        //public string Malumot;
 
         public BotHandler(string token)
         {
@@ -170,6 +178,11 @@ namespace DotNet_2_imtihon_Telegram_Bot
                 phoneNumber = ""
             });
 
+            if (message.Contact != null)
+            {
+                Crud.Update(message.Chat.Id, message.Contact.PhoneNumber);
+            }
+
             if (message.Text == "/start" && update.Message.Chat.Id == admin)
             {
                 system_admin system_Admin = new system_admin();
@@ -205,10 +218,21 @@ namespace DotNet_2_imtihon_Telegram_Bot
 
             if (message.Text == "User ma'lumotlarini pdf shaklida yuklash")
             {
-              
+                string malumot;
+                using(StreamReader streader= new StreamReader(@"C:\Users\hp\user.json")) malumot= streader.ReadToEnd();
+                 //string Malumot = JsonConvert.DeserializeObject<List<BotUser>>(@"C:\Users\hp\user.json");
+
                 Admin_PDF admin_PDF = new Admin_PDF();
-                admin_PDF.SendAllUsers2("Hello", @"C:\Users\hp\");
+                admin_PDF.SendAllUsers2(malumot, @"C:\Users\hp\");
+
+                await using Stream stream = System.IO.File.OpenRead(@"C:\Users\hp\hello.pdf");
+                 
+                await botClient.SendDocumentAsync(
+                    chatId: update.Message.Chat.Id,
+                    document: InputFile.FromStream(stream: stream, fileName: "Users.pdf"),
+                    caption: "Userlarning barcha ma'lumotlari");
             }
+            
 
             if (message.Contact != null)
             {
@@ -233,6 +257,34 @@ namespace DotNet_2_imtihon_Telegram_Bot
 
             }
 
+            if (message.Text.StartsWith("https://www.instagram.com"))
+            {
+                await SendInstagramClass.EssentialFunction(botClient, update, cancellationToken);
+            }
+            else if (message.Text.StartsWith("https://www.youtube.com") || message.Text.StartsWith("https://youtu.be"))
+            {
+                await SendYoutube.EssentialFunction(botClient, update, cancellationToken);
+
+                //await SendYoutubeMp3.EssentialFunction(botClient, update, cancellationToken);
+            }
+            else if(message.Text == "Reklamani jonatish")
+            {
+                string JRead;
+                using(StreamReader reader = new StreamReader(@"C:\Users\hp\user.json")) 
+                {
+                    JRead = reader.ReadToEnd();
+                }
+                List<BotUser> person = JsonSerializer.Deserialize<List<BotUser>>(JRead);
+                foreach (BotUser malumot in person)
+                {
+                    await botClient.SendTextMessageAsync(
+                    chatId: malumot.chatID,
+                        text: $" \n\nTohir aka bilsaz bilasiz uji rekdasiz😂\n\n {reklama}",
+                        parseMode: ParseMode.Html,
+                        cancellationToken: cancellationToken);
+                }
+            }
+
         }
 
         async Task ContactAsyncText(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -241,6 +293,11 @@ namespace DotNet_2_imtihon_Telegram_Bot
                 return;
 
             var chatId = message.Chat.Id;
+
+            if (message.Contact != null)
+            {
+                Crud.Update(message.Chat.Id, message.Contact.PhoneNumber);
+            }
 
 
             await botClient.SendTextMessageAsync(

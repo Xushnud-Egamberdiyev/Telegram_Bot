@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Telegram.Bot.Types;
 
 namespace DotNet_2_imtihon_Telegram_Bot
 {
@@ -135,6 +136,8 @@ namespace DotNet_2_imtihon_Telegram_Bot
     }
     public class BotUser
     {
+        internal ChatId id;
+
         public long chatID { get; set; }
 
         public int status { get; set; }
