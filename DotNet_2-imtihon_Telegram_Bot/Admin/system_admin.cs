@@ -26,8 +26,8 @@ namespace DotNet_2_imtihon_Telegram_Bot.Admin
 
                     ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
                     {
-                KeyboardButton.WithRequestContact("Reklamani jonatish"),
-                KeyboardButton.WithRequestContact("User ma'lumotlarini pdf shaklida yuklash")
+                new KeyboardButton("Reklamani jonatish"),
+                new KeyboardButton("User ma'lumotlarini pdf shaklida yuklash")
 
 
 
@@ -37,7 +37,7 @@ namespace DotNet_2_imtihon_Telegram_Bot.Admin
                     };
                     await botClient.SendTextMessageAsync(
                            chatId: chatId,
-                           text: "Assalomu elykum! Botimizga hush kelibsiz\nBu botga admin paneli orqali kirdingiz",
+                           text: "Salom! Botimizga hush kelibsiz\nBu botga admin paneli orqali kirdingiz",
                            replyMarkup: replyKeyboardMarkup,
                            cancellationToken: cancellationToken);
                     return;
@@ -47,13 +47,7 @@ namespace DotNet_2_imtihon_Telegram_Bot.Admin
             }
         }
 
-        public async Task Reklama(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
-        {
-            if(update.Message.Text == "Reklamani jonatish")
-            {
-                Console.WriteLine("Keldi");
-            }
-        }
+        
     }
 
     

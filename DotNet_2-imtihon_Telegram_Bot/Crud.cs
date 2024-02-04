@@ -9,7 +9,7 @@ namespace DotNet_2_imtihon_Telegram_Bot
 {
     public class Crud
     {
-        public static string filePath = @"C:\Users\user\Desktop\Database.json";
+        public static string filePath = @"C:\Users\hp\user.json";
 
         public static void Create(BotUser chat)
         {
@@ -53,7 +53,6 @@ namespace DotNet_2_imtihon_Telegram_Bot
         }
         public static void Update(long chatId, string newPhoneNumber)
         {
-
             try
             {
                 List<BotUser> users = GetAllChats();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotNet_2_imtihon_Telegram_Bot.Admin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,8 @@ namespace DotNet_2_imtihon_Telegram_Bot
     public class BotHandler
     {
         public string link { get; set; }
+        public long admin = 5921666026;
+        public int son = 0;
 
         public BotHandler(string token)
         {
@@ -48,56 +51,208 @@ namespace DotNet_2_imtihon_Telegram_Bot
             // Send cancellation request to stop bot
             cts.Cancel();
 
-        //}
+            //}
 
-        async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+            async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+            {
+
+
+                var handlar = update.Type switch
+                {
+                    UpdateType.Message => HandlaMessageAsync(botClient, update, cancellationToken),
+                    UpdateType.EditedMessage => HandleVideoMessageAync2(botClient, update, cancellationToken),
+                    UpdateType.CallbackQuery => HandleCallBackQueryAsymc(botClient, update, cancellationToken),
+                    _ => HandlaUnkowMessageAsync(botClient, update, cancellationToken)
+                };
+
+
+                try
+                {
+                    await handlar;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error Chiqdi! {ex.Message}");
+                }
+
+
+
+
+
+
+
+
+            }
+
+        async Task HandlaUnkowMessageAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            // Only process Message updates: https://core.telegram.org/bots/api#message
-            if (update.Message is not { } message)
-                return;
-            // Only process text messages
+            throw new NotImplementedException();
+        }
+
+        async Task HandleCallBackQueryAsymc(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        async Task HandleVideoMessageAync2(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        async Task HandlaMessageAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        {
+                // Only process Message updates: https://core.telegram.org/bots/api#message
+                Console.WriteLine($"Received a '{update.Message.Text}' message in chat ,{update.Message.Chat.LastName} {update.Message.Chat.FirstName} {update.Message.Chat.Id} ");
+                
+                if (update.Message is not { } message)
+                    return;
+
+                // Only process text messages
+                var chatId = message.Chat.Id;
+
+                var handlar = update.Message.Type switch
+                {
+                    MessageType.Contact => ContactAsyncText(botClient, update, cancellationToken),
+                    MessageType.Text => TextAsync(botClient, update, cancellationToken),
+                    _ => TextAsync(botClient, update, cancellationToken)
+
+                };
 
 
-            var chatId = message.Chat.Id;
+
+
+
+
+
+                //if (message.Text == null)
+                //{
+                //    return;
+                //}
+                //else if (message.Text.StartsWith("https://www.instagram.com"))
+                //{
+                //    string replaceMessage = message.Text!.Replace("www.", "dd");
+
+                //    try
+                //    {
+                //        Console.WriteLine("Qale");
+                //        await botClient.SendVideoAsync(
+                //           chatId: message.Chat.Id,
+                //           video: $"{replaceMessage}",
+                //           supportsStreaming: true,
+                //           cancellationToken: cancellationToken);
+                //    }
+                //    catch (Exception) { }
+
+                //    try
+                //    {
+                //        await botClient.SendPhotoAsync(chatId: message.Chat.Id, photo: $"{replaceMessage}", cancellationToken: cancellationToken);
+                //    }
+                //    catch (Exception) { }
+                //}
+
+
+
+                
+
+            }
+        }
+
+        private async Task TextAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        {
+
+            if (update.Message is not { } message) return;
+            //if (message.Chat.Id is not { } chatId) return;
 
             Crud.Create(new BotUser()
             {
-                chatID = chatId,
+                chatID = message.Chat.Id,
                 status = 0,
                 phoneNumber = ""
             });
-            Console.WriteLine($"Received a '{update.Message.Text}' message in chat ,{update.Message.Chat.LastName} {update.Message.Chat.FirstName} {update.Message.Chat.Id} ");
 
-            if (message.Text == "/start" && update.Message.Chat.Id == 5921666029)
+            if (message.Text == "/start" && update.Message.Chat.Id == admin)
             {
                 system_admin system_Admin = new system_admin();
                 system_Admin.AdminWork(botClient, update, cancellationToken);
 
+            }else if (message.Text == "/start")
+            {
+                if (Crud.IsPhoneNumberNull(message.Chat.Id) == false)
+                {
+
+                    ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
+                        {
+                        KeyboardButton.WithRequestContact("Contact ☎️")
+                        })
+
+                    {
+                        ResizeKeyboard = true
+                    };
+
+                    await botClient.SendTextMessageAsync(
+                     chatId: message.Chat.Id,
+                     text: "Assalomu elykum! Botimizga hush kelibsiz\nBu bot orqali Video,Musica saqlab olishingiz mumkin✅\n" +
+                       "Botdan tolliq foydalanish uchun Telefon nomeringizni qoldiring!",
+                     replyMarkup: replyKeyboardMarkup,
+                     cancellationToken: cancellationToken);
+                    Crud.ChangeStatusCode(message.Chat.Id, 0);
+                    son = 0;
+                    return;
+                }
+
+
             }
 
-            if (message.Text == "/start")
+            if (message.Text == "User ma'lumotlarini pdf shaklida yuklash")
             {
-                
+              
+                Admin_PDF admin_PDF = new Admin_PDF();
+                admin_PDF.SendAllUsers2("Hello", @"C:\Users\hp\");
+            }
+
+            if (message.Contact != null)
+            {
+                Crud.Update(message.Chat.Id, message.Contact.PhoneNumber);
+            }
+            if (Crud.IsPhoneNumberNull(message.Chat.Id) == false && update.Message.Chat.Id != admin)
+            {
 
                 ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
                 {
                 KeyboardButton.WithRequestContact("Phone number☎️")
-            })
+                    })
                 {
                     ResizeKeyboard = true
                 };
                 Message sentMessage1 = await botClient.SendTextMessageAsync(
-                    chatId: chatId,
-                    text: "Assalomu elykum! Botimizga hush kelibsiz\nBu bot orqali Video,Musica saqlab olishingiz mumkin✅\n" +
-                    "Botdan tolliq foydalanish uchun Telefon nomeringizni qoldiring!",
+                    chatId: message.Chat.Id,
+                    text: "Botdan tolliq foydalanish uchun Telefon nomeringizni qoldiring ☎️!",
                     replyMarkup: replyKeyboardMarkup,
                     cancellationToken: cancellationToken);
 
 
             }
+
         }
 
-        async Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+        async Task ContactAsyncText(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        {
+            if (update.Message is not { } message)
+                return;
+
+            var chatId = message.Chat.Id;
+
+
+            await botClient.SendTextMessageAsync(
+                           chatId: chatId,
+                           text: "Contagingiz qabul qilindi✅\n bot orqali Video,Musica saqlab olishingiz mumkin",
+                           replyMarkup: new ReplyKeyboardRemove(),
+                           cancellationToken: cancellationToken);
+        }
+
+
+
+        async Task HandlePollingErrorAsync(ITelegramBotClient client, Exception exception, CancellationToken token)
         {
             var ErrorMessage = exception switch
             {
@@ -109,5 +264,4 @@ namespace DotNet_2_imtihon_Telegram_Bot
             Console.WriteLine(ErrorMessage);
         }
     }
-
 }
