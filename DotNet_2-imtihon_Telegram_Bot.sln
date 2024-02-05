@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet_2-imtihon_Telegram_Bot", "DotNet_2-imtihon_Telegram_Bot\DotNet_2-imtihon_Telegram_Bot.csproj", "{CE84BF30-C511-4A30-A643-5BC4AEEC90F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNet_2-imtihon_Telegram_Bot", "DotNet_2-imtihon_Telegram_Bot\DotNet_2-imtihon_Telegram_Bot.csproj", "{CE84BF30-C511-4A30-A643-5BC4AEEC90F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quary", "Quary\Quary.csproj", "{1D099F13-36D8-4304-866D-18AD4B75970B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{CE84BF30-C511-4A30-A643-5BC4AEEC90F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE84BF30-C511-4A30-A643-5BC4AEEC90F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE84BF30-C511-4A30-A643-5BC4AEEC90F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D099F13-36D8-4304-866D-18AD4B75970B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D099F13-36D8-4304-866D-18AD4B75970B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D099F13-36D8-4304-866D-18AD4B75970B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D099F13-36D8-4304-866D-18AD4B75970B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
