@@ -21,7 +21,7 @@ namespace DotNet_2_imtihon_Telegram_Bot.Instagram
                 RequestUri = new Uri($"https://instagram-downloader-download-instagram-videos-stories1.p.rapidapi.com/?url={encodedUrl}"),
                 Headers =
                 {
-                    { "X-RapidAPI-Key", "16e48dfbd2msh7371fe5e63f3af1p180fe6jsnee0363ed0461"  },
+                    { "X-RapidAPI-Key",  "f927051de5msh33c089150223b61p1e384ajsn0b24f85919fd"},
                     { "X-RapidAPI-Host", "instagram-downloader-download-instagram-videos-stories1.p.rapidapi.com" },
                 },
             };

@@ -19,7 +19,7 @@ namespace DotNet_2_imtihon_Telegram_Bot.Admin
             var chatId = message.Chat.Id;
 
 
-            if (message.Text == "/start" && update.Message.Chat.Id == 943861214)
+            if (message.Text == "/start" && update.Message.Chat.Id == 5921666026)
             {
 
                

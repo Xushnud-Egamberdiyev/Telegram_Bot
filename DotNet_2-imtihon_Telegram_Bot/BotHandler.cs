@@ -20,7 +20,7 @@ namespace DotNet_2_imtihon_Telegram_Bot
     public class BotHandler
     {
         public string link { get; set; }
-        public long admin = 943861214;
+        public long admin = 5921666026;
         public int son = 0;
         public string reklama = "https://t.me/T_Odilov";
 
